@@ -1,0 +1,55 @@
+#include <CapacitiveSensor.h>
+
+byte pinSalidaRojo = 8;
+byte pinSalidaAmarillo = 9;
+byte pinSalidaVerde = 10;
+
+CapacitiveSensor sensorRojo = CapacitiveSensor(2,5);
+CapacitiveSensor sensorAmarillo = CapacitiveSensor(2,6);
+CapacitiveSensor sensorVerde = CapacitiveSensor(2,7);
+
+unsigned int rango = 150;
+
+void setup(){
+  Serial.begin(9600);
+  
+  pinMode(pinSalidaRojo,OUTPUT);
+  pinMode(pinSalidaAmarillo,OUTPUT); 
+  pinMode(pinSalidaVerde,OUTPUT); 
+  
+  sensorRojo.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  sensorAmarillo.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  sensorVerde.set_CS_AutocaL_Millis(0xFFFFFFFF);
+}//setup
+
+void loop(){
+  delay(100);
+  
+  unsigned long valorRojo = sensorRojo.capacitiveSensor(30);
+  unsigned long valorAmarillo = sensorAmarillo.capacitiveSensor(30);
+  unsigned long valorVerde = sensorVerde.capacitiveSensor(30);
+
+  if(valorRojo > rango)
+    digitalWrite(pinSalidaRojo,HIGH);
+  else
+    digitalWrite(pinSalidaRojo,LOW);
+
+  if(valorAmarillo > rango)
+    digitalWrite(pinSalidaAmarillo,HIGH);
+  else
+    digitalWrite(pinSalidaAmarillo,LOW);
+
+  if(valorVerde > rango)
+    digitalWrite(pinSalidaVerde,HIGH);
+  else
+    digitalWrite(pinSalidaVerde,LOW);
+
+
+  Serial.print(valorRojo);  
+  Serial.print("\t");
+  Serial.print(valorAmarillo);
+  Serial.print("\t");
+  Serial.print(valorVerde);
+
+  Serial.println("");
+}//loop
